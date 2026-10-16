@@ -16,9 +16,12 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as ReferralsRouteImport } from './routes/referrals'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as ServicesRouteImport } from './routes/services'
+import { Route as AuthenticatedAdminSetupRouteImport } from './routes/_authenticated/admin-setup'
 import { Route as AuthenticatedBookRouteImport } from './routes/_authenticated/book'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as ApartmentsIndexRouteImport } from './routes/apartments.index'
 import { Route as ApartmentsIdRouteImport } from './routes/apartments.$id'
+import { Route as AuthenticatedPayBookingIdRouteImport } from './routes/_authenticated/pay.$bookingId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -54,9 +57,19 @@ const ServicesRoute = ServicesRouteImport.update({
   path: '/services',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAdminSetupRoute = AuthenticatedAdminSetupRouteImport.update({
+  id: '/admin-setup',
+  path: '/admin-setup',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedBookRoute = AuthenticatedBookRouteImport.update({
   id: '/book',
   path: '/book',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const ApartmentsIndexRoute = ApartmentsIndexRouteImport.update({
@@ -69,6 +82,12 @@ const ApartmentsIdRoute = ApartmentsIdRouteImport.update({
   path: '/apartments/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedPayBookingIdRoute =
+  AuthenticatedPayBookingIdRouteImport.update({
+    id: '/pay/$bookingId',
+    path: '/pay/$bookingId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -77,9 +96,12 @@ export interface FileRoutesByFullPath {
   '/referrals': typeof ReferralsRoute
   '/reset-password': typeof ResetPasswordRoute
   '/services': typeof ServicesRoute
+  '/admin-setup': typeof AuthenticatedAdminSetupRoute
   '/book': typeof AuthenticatedBookRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
   '/apartments/$id': typeof ApartmentsIdRoute
   '/apartments/': typeof ApartmentsIndexRoute
+  '/pay/$bookingId': typeof AuthenticatedPayBookingIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -88,9 +110,12 @@ export interface FileRoutesByTo {
   '/referrals': typeof ReferralsRoute
   '/reset-password': typeof ResetPasswordRoute
   '/services': typeof ServicesRoute
+  '/admin-setup': typeof AuthenticatedAdminSetupRoute
   '/book': typeof AuthenticatedBookRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
   '/apartments/$id': typeof ApartmentsIdRoute
   '/apartments': typeof ApartmentsIndexRoute
+  '/pay/$bookingId': typeof AuthenticatedPayBookingIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -101,9 +126,12 @@ export interface FileRoutesById {
   '/referrals': typeof ReferralsRoute
   '/reset-password': typeof ResetPasswordRoute
   '/services': typeof ServicesRoute
+  '/_authenticated/admin-setup': typeof AuthenticatedAdminSetupRoute
   '/_authenticated/book': typeof AuthenticatedBookRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/apartments/$id': typeof ApartmentsIdRoute
   '/apartments/': typeof ApartmentsIndexRoute
+  '/_authenticated/pay/$bookingId': typeof AuthenticatedPayBookingIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -114,9 +142,12 @@ export interface FileRouteTypes {
     | '/referrals'
     | '/reset-password'
     | '/services'
+    | '/admin-setup'
     | '/book'
+    | '/dashboard'
     | '/apartments/$id'
     | '/apartments/'
+    | '/pay/$bookingId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -125,9 +156,12 @@ export interface FileRouteTypes {
     | '/referrals'
     | '/reset-password'
     | '/services'
+    | '/admin-setup'
     | '/book'
+    | '/dashboard'
     | '/apartments/$id'
     | '/apartments'
+    | '/pay/$bookingId'
   id:
     | '__root__'
     | '/'
@@ -137,9 +171,12 @@ export interface FileRouteTypes {
     | '/referrals'
     | '/reset-password'
     | '/services'
+    | '/_authenticated/admin-setup'
     | '/_authenticated/book'
+    | '/_authenticated/dashboard'
     | '/apartments/$id'
     | '/apartments/'
+    | '/_authenticated/pay/$bookingId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -205,11 +242,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/admin-setup': {
+      id: '/_authenticated/admin-setup'
+      path: '/admin-setup'
+      fullPath: '/admin-setup'
+      preLoaderRoute: typeof AuthenticatedAdminSetupRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/book': {
       id: '/_authenticated/book'
       path: '/book'
       fullPath: '/book'
       preLoaderRoute: typeof AuthenticatedBookRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/apartments/': {
@@ -226,15 +277,28 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApartmentsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/pay/$bookingId': {
+      id: '/_authenticated/pay/$bookingId'
+      path: '/pay/$bookingId'
+      fullPath: '/pay/$bookingId'
+      preLoaderRoute: typeof AuthenticatedPayBookingIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminSetupRoute: typeof AuthenticatedAdminSetupRoute
   AuthenticatedBookRoute: typeof AuthenticatedBookRoute
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedPayBookingIdRoute: typeof AuthenticatedPayBookingIdRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminSetupRoute: AuthenticatedAdminSetupRoute,
   AuthenticatedBookRoute: AuthenticatedBookRoute,
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedPayBookingIdRoute: AuthenticatedPayBookingIdRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
